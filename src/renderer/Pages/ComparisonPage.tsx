@@ -1,42 +1,17 @@
-import { Form, Row, Col, Card } from "react-bootstrap";
+import { Row, Container } from "react-bootstrap";
+import SearchForm from "renderer/Components/SearchForm";
+import Viewer from "renderer/Components/Viewer";
 
 const ComparisonPage = () => {
   return (
     <div>
-      <h1 className="text-center my-3">Test</h1>
-      <Card className="formcard p-3">
-        <Form>
-          <Row>
-            <Col>
-              <Form.Select className="formdd">
-                <option>test select</option>
-              </Form.Select>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Form.Select className="formdd">
-                <option>test select</option>
-              </Form.Select>
-            </Col>
-            <Col>
-              <Form.Select className="formdd">
-                <option>test select</option>
-              </Form.Select>
-            </Col>
-            <Col>
-              <Form.Select className="formdd">
-                <option>test select</option>
-              </Form.Select>
-            </Col>
-            <Col>
-              <Form.Select className="formdd">
-                <option>test select</option>
-              </Form.Select>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
+      <SearchForm />
+      <Container>
+        <Row>
+          <Viewer pdf="http://africau.edu/images/default/sample.pdf" />
+          <Viewer pdf="http://africau.edu/images/default/sample.pdf" />
+        </Row>
+      </Container>
     </div>
   );
 };

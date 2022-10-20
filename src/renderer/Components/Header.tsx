@@ -40,7 +40,7 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarColor03">
             <ul className="navbar-nav ms-auto">
               <Row>
-                <Col onClick={() => navigate("/")}>
+                <Col onClick={() => navigate("/add")}>
                   <Row>
                     <span className="text-center">
                       <FontAwesomeIcon
@@ -54,7 +54,7 @@ const Header = () => {
                     <h6>إضافة</h6>
                   </Row>
                 </Col>
-                <Col onClick={() => navigate("/register")}>
+                <Col onClick={() => navigate("/compare")}>
                   <Row>
                     <span className="text-center">
                       <FontAwesomeIcon
