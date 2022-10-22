@@ -51,14 +51,14 @@ const LoginPage = () => {
             <Form.Group className="form-group py-3">
               <Form.Control
                 type="password"
-                placeholder="Password"
+                placeholder="كلمة المرور"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
             <div className="d-grid gap-2">
               <Button type="submit" className="btn btn-primary my-3">
-                Login
+                دخول
               </Button>
             </div>
           </Form>

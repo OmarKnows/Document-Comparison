@@ -105,12 +105,15 @@
 }
 
 .formdd { 
-  text-align: center; 
   margin-top: 10px;
 }
 
 .clickable{
   cursor: pointer;
+}
+
+.arabicAllignment{
+  text-align: right
 }
 
 body {
