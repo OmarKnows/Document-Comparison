@@ -1,15 +1,23 @@
-import { Row, Container } from "react-bootstrap";
-import SearchForm from "renderer/Components/SearchForm";
-import Viewer from "renderer/Components/Viewer";
+import { Row, Container, Card, Form, Col } from "react-bootstrap";
+import Comparison from "renderer/Components/Comparison";
 
 const ComparisonPage = () => {
   return (
     <div>
-      <SearchForm />
+      <Card className="formcard p-3 my-3 text-center">
+        <Row>
+          <Col>
+            <Form.Label>الجهة</Form.Label>
+            <Form.Select>
+              <option>اختيار</option>
+            </Form.Select>
+          </Col>
+        </Row>
+      </Card>
       <Container>
         <Row>
-          <Viewer pdf="http://africau.edu/images/default/sample.pdf" />
-          <Viewer pdf="http://africau.edu/images/default/sample.pdf" />
+          <Comparison pdf="http://africau.edu/images/default/sample.pdf" />
+          <Comparison pdf="http://africau.edu/images/default/sample.pdf" />
         </Row>
       </Container>
     </div>
