@@ -1,11 +1,11 @@
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import Controls from "./Controls";
 
-interface ViewerProp {
+interface ComparisonProp {
   pdf: string;
 }
 
-const Comparison = (prop: ViewerProp) => {
+const Comparison = (prop: ComparisonProp) => {
   return (
     <Col className="text-center">
       <Card className="p-3 my-3">
