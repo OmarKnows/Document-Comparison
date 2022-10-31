@@ -54,6 +54,7 @@ const Header = () => {
                 </Col>
                 <Col
                   onClick={() => {
+                    localStorage.removeItem("userInfo");
                     navigate("/");
                   }}
                 >

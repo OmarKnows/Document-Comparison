@@ -1,23 +1,49 @@
 import { Card, Form, Button } from "react-bootstrap";
 import logo from "../../../assets/logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Message from "renderer/Components/Message";
+import axios from "axios";
 
 interface User {
-  username: string;
+  name: string;
 }
 
 const LoginPage = () => {
-  const [username, setUsername] = useState<String>("");
+  const [name, setname] = useState<any>("");
   const [password, setPassword] = useState<any>("");
   const [users, setUsers] = useState<User[]>([]);
-
+  const [loginError, setloginError] = useState<String>("");
   const navigate = useNavigate();
+
+  const login = async () => {
+    try {
+      await axios.post("/api/v1/user/login", {
+        name,
+        password,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(name));
+      navigate("/compare");
+    } catch (error) {
+      if (axios.isAxiosError(error))
+        setloginError(error.response?.data.message);
+    }
+  };
 
   const submitHandler = (e: any) => {
     e.preventDefault();
-    navigate("/compare");
+    login();
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("userInfo")) navigate("/compare");
+    const fetchUsers = async () => {
+      const { data } = await axios.get("/api/v1/user");
+      setUsers(data);
+    };
+
+    fetchUsers();
+  }, [users]);
 
   return (
     <div>
@@ -33,17 +59,22 @@ const LoginPage = () => {
           <div className="my-4">
             <h1 className="text-center mainTitle">منظومة التسويق</h1>
           </div>
+          {loginError ? (
+            <Message variant="danger">{loginError}</Message>
+          ) : (
+            <></>
+          )}
           <Form onSubmit={submitHandler}>
             <Form.Group>
               <Form.Select
                 onChange={(e) => {
-                  setUsername(e.target.value);
+                  setname(e.target.value);
                 }}
               >
                 <option value={""}>{""}</option>
                 {users.map((user) => (
-                  <option key={user.username} value={user.username}>
-                    {user.username}
+                  <option key={user.name} value={user.name}>
+                    {user.name}
                   </option>
                 ))}
               </Form.Select>
