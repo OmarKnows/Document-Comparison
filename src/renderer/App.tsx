@@ -16,7 +16,6 @@ export default function App() {
     } else {
       setHeader(false);
     }
-    console.log(header);
   }, []);
 
   return (
