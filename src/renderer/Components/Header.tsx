@@ -1,13 +1,16 @@
 import { Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAppDispatch } from "hooks";
 import {
   faArrowRightFromBracket,
   faFileCirclePlus,
   faFile,
 } from "@fortawesome/free-solid-svg-icons";
+import { logout } from "features/user/userSlice";
 
 const Header = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   return (
     <div>
@@ -54,8 +57,7 @@ const Header = () => {
                 </Col>
                 <Col
                   onClick={() => {
-                    localStorage.removeItem("userInfo");
-                    navigate("/");
+                    dispatch(logout());
                   }}
                 >
                   <Row>

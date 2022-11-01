@@ -3,47 +3,30 @@ import logo from "../../../assets/logo.png";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Message from "renderer/Components/Message";
-import axios from "axios";
-
-interface User {
-  name: string;
-}
+import { useAppDispatch, useAppSelector } from "hooks";
+import { fetchUsers, login } from "features/user/userSlice";
 
 const LoginPage = () => {
   const [name, setname] = useState<any>("");
   const [password, setPassword] = useState<any>("");
-  const [users, setUsers] = useState<User[]>([]);
-  const [loginError, setloginError] = useState<String>("");
   const navigate = useNavigate();
-
-  const login = async () => {
-    try {
-      await axios.post("/api/v1/user/login", {
-        name,
-        password,
-      });
-      localStorage.setItem("userInfo", JSON.stringify(name));
-      navigate("/compare");
-    } catch (error) {
-      if (axios.isAxiosError(error))
-        setloginError(error.response?.data.message);
-    }
-  };
+  const dispatch = useAppDispatch();
+  const { users, usersError, userInfo } = useAppSelector((state) => state.user);
 
   const submitHandler = (e: any) => {
     e.preventDefault();
-    login();
+    dispatch(
+      login({
+        name,
+        password,
+      })
+    );
   };
 
   useEffect(() => {
-    if (localStorage.getItem("userInfo")) navigate("/compare");
-    const fetchUsers = async () => {
-      const { data } = await axios.get("/api/v1/user");
-      setUsers(data);
-    };
-
-    fetchUsers();
-  }, [users]);
+    if (userInfo) navigate("/compare");
+    dispatch(fetchUsers());
+  }, [dispatch, userInfo]);
 
   return (
     <div>
@@ -59,8 +42,8 @@ const LoginPage = () => {
           <div className="my-4">
             <h1 className="text-center mainTitle">منظومة التسويق</h1>
           </div>
-          {loginError ? (
-            <Message variant="danger">{loginError}</Message>
+          {usersError.isError ? (
+            <Message variant="danger">{usersError.message}</Message>
           ) : (
             <></>
           )}

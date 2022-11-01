@@ -4,23 +4,14 @@ import ComparisonPage from "./Pages/ComparisonPage";
 import AddDocumentPage from "./Pages/AddDocumentPage";
 import Header from "./Components/Header";
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useAppSelector } from "hooks";
 
 export default function App() {
-  const [header, setHeader] = useState<Boolean>(false);
-  const [change, setChange] = useState<Boolean>(false);
-
-  useEffect(() => {
-    if (localStorage.getItem("userInfo") != null) {
-      setHeader(true);
-    } else {
-      setHeader(false);
-    }
-  }, []);
+  const { userInfo } = useAppSelector((state) => state.user);
 
   return (
     <Router>
-      {header ? <Header /> : <></>}
+      {userInfo ? <Header /> : <></>}
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/compare" element={<ComparisonPage />} />
