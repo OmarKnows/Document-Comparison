@@ -11,11 +11,11 @@ export default function App() {
 
   return (
     <Router>
-      {userInfo ? <Header /> : <></>}
+      {/* {userInfo ? <Header /> : <></>} */}
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/compare" element={<ComparisonPage />} />
-        <Route path="/add" element={<AddDocumentPage />} />
+        {/* <Route path="/" element={<LoginPage />} />
+        <Route path="/compare" element={<ComparisonPage />} /> */}
+        <Route path="/" element={<AddDocumentPage />} />
       </Routes>
     </Router>
   );
