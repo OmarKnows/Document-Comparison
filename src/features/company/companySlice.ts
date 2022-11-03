@@ -1,13 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios, { AxiosError } from "axios";
 import { Company } from "./companyModel";
 import companyServices from "./companyServices";
 
 export interface companyState {
-  comapnies?: Company[];
+  isCompanyError: boolean;
+  companyErrorMessage: string;
+  companies?: Company[];
 }
 
 const initialState: companyState = {
-  comapnies: [],
+  isCompanyError: false,
+  companyErrorMessage: "",
+  companies: [],
 };
 
 export const fetchCompanies = createAsyncThunk("/companies", async () => {
@@ -20,11 +25,12 @@ export const fetchCompanies = createAsyncThunk("/companies", async () => {
 
 export const insertCompany = createAsyncThunk(
   "/insertCompany",
-  async (company: Company) => {
+  async (company: Company, { rejectWithValue }) => {
     try {
-      companyServices.insertCompany(company);
+      return await companyServices.insertCompany(company);
     } catch (error) {
-      console.log("Error: ", error);
+      if (axios.isAxiosError(error))
+        return rejectWithValue(error.response?.data.message);
     }
   }
 );
@@ -34,9 +40,15 @@ export const companySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCompanies.fulfilled, (state, action) => {
-      state.comapnies = action.payload?.data || [];
-    });
+    builder
+      .addCase(fetchCompanies.fulfilled, (state, action) => {
+        state.companies = action.payload?.data || [];
+      })
+      .addCase(insertCompany.rejected, (state, action) => {
+        state.isCompanyError = true;
+        state.companyErrorMessage = <string>action.payload;
+        console.log(action.payload);
+      });
   },
 });
 

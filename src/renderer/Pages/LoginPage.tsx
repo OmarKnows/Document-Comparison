@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "hooks";
 import { fetchUsers, login } from "features/user/userSlice";
 
 const LoginPage = () => {
-  const [name, setname] = useState<any>("");
+  const [name, setName] = useState<any>("");
   const [password, setPassword] = useState<any>("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -51,7 +51,7 @@ const LoginPage = () => {
             <Form.Group>
               <Form.Select
                 onChange={(e) => {
-                  setname(e.target.value);
+                  setName(e.target.value);
                 }}
               >
                 <option value={""}>{""}</option>
