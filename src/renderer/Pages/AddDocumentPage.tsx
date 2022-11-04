@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import Popup from "renderer/Components/Popup";
 import DatePicker from "react-date-picker";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const AddDocumentPage = () => {
   const [newCompany, setNewCompany] = useState<Company>({ name: "" });
@@ -17,8 +18,10 @@ const AddDocumentPage = () => {
   const [filePopUp, setFilePopUp] = useState<boolean>(false);
   const [companyPopUp, setCompanyPopUp] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const { userInfo } = useAppSelector((state) => state.user);
   const { companies, isCompanyError, companyMessage } = useAppSelector(
     (state) => state.company
   );
@@ -52,8 +55,9 @@ const AddDocumentPage = () => {
   };
 
   useEffect(() => {
+    if (!userInfo) navigate("/");
     dispatch(fetchCompanies());
-  }, [dispatch]);
+  }, [dispatch, navigate, userInfo]);
 
   return (
     <div className="arabicAllignment logincard">

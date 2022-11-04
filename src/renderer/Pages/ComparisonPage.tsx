@@ -1,7 +1,17 @@
+import { useAppDispatch, useAppSelector } from "hooks";
+import { useEffect } from "react";
 import { Row, Container, Card, Form, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Comparison from "renderer/Components/Comparison";
 
 const ComparisonPage = () => {
+  const navigate = useNavigate();
+  const { userInfo } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!userInfo) navigate("/");
+  }, [navigate, userInfo]);
+
   return (
     <div>
       <Card className="formcard p-3 my-3 text-center">

@@ -11,10 +11,13 @@ const LoginPage = () => {
   const [password, setPassword] = useState<any>("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { users, usersError, userInfo } = useAppSelector((state) => state.user);
+  const { users, isUserError, userErrorMessage, userInfo } = useAppSelector(
+    (state) => state.user
+  );
 
   const submitHandler = (e: any) => {
     e.preventDefault();
+
     dispatch(
       login({
         name,
@@ -24,9 +27,9 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    if (userInfo) navigate("/compare");
+    if (userInfo) navigate("/add");
     dispatch(fetchUsers());
-  }, [dispatch, userInfo]);
+  }, [navigate, userInfo]);
 
   return (
     <div>
@@ -42,8 +45,8 @@ const LoginPage = () => {
           <div className="my-4">
             <h1 className="text-center mainTitle">منظومة التسويق</h1>
           </div>
-          {usersError.isError ? (
-            <Message variant="danger">{usersError.message}</Message>
+          {isUserError ? (
+            <Message variant="danger">{userErrorMessage}</Message>
           ) : (
             <></>
           )}

@@ -8,15 +8,12 @@ const fetchUsers = async () => {
 };
 
 const login = async (user: User) => {
-  try {
-    await axios.post("/api/v1/user/login", {
-      name: user.name,
-      password: user.password,
-    });
-    localStorage.setItem("userInfo", JSON.stringify(user.name));
-  } catch (error) {
-    if (axios.isAxiosError(error)) return error.response?.data.message;
-  }
+  const response = await axios.post("/api/v1/user/login", {
+    name: user.name,
+    password: user.password,
+  });
+  localStorage.setItem("userInfo", JSON.stringify(user.name));
+  return response;
 };
 
 const logout = () => {

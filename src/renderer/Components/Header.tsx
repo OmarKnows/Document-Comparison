@@ -58,6 +58,7 @@ const Header = () => {
                 <Col
                   onClick={() => {
                     dispatch(logout());
+                    navigate("/");
                   }}
                 >
                   <Row>

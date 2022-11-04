@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { User } from "./userModel";
 import userServices from "./userServices";
 
@@ -6,25 +7,17 @@ const userInfo = localStorage.getItem("userInfo")
   ? localStorage.getItem("userInfo")
   : null;
 
-export interface usersError {
-  isError: boolean;
-  message: string;
-}
-
-export interface userListState {
+export interface userState {
   userInfo: string | null;
-  usersLoading: boolean;
-  usersError: usersError;
+  isUserError: boolean;
+  userErrorMessage: string;
   users: User[];
 }
 
-const initialState: userListState = {
+const initialState: userState = {
   userInfo,
-  usersLoading: false,
-  usersError: {
-    isError: false,
-    message: "",
-  },
+  isUserError: false,
+  userErrorMessage: "",
   users: [],
 };
 
@@ -36,13 +29,17 @@ export const fetchUsers = createAsyncThunk("/users", async () => {
   }
 });
 
-export const login = createAsyncThunk("/login", async (user: User) => {
-  try {
-    return await userServices.login(user);
-  } catch (error) {
-    console.log("Error: ", error);
+export const login = createAsyncThunk(
+  "/login",
+  async (user: User, { rejectWithValue }) => {
+    try {
+      return await userServices.login(user);
+    } catch (error) {
+      if (axios.isAxiosError(error))
+        return rejectWithValue(error.response?.data.message);
+    }
   }
-});
+);
 
 export const logout = createAsyncThunk("/logout", async () => {
   try {
@@ -58,32 +55,20 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUsers.pending, (state) => {
-        state.usersLoading = true;
-      })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.usersLoading = false;
         state.users = action.payload?.data || [];
       })
-      .addCase(fetchUsers.rejected, (state) => {
-        state.usersLoading = false;
-        state.usersError = {
-          isError: true,
-          message: "error",
-        };
-        state.users = [];
-      })
       .addCase(login.fulfilled, (state, action) => {
-        state.userInfo = action.payload;
+        state.userInfo = action.payload?.data;
+        state.isUserError = false;
       })
       .addCase(login.rejected, (state, action) => {
-        state.usersError = {
-          isError: true,
-          message: "error",
-        };
+        state.isUserError = true;
+        state.userErrorMessage = <string>action.payload;
       })
-      .addCase(logout.fulfilled, (state, action) => {
+      .addCase(logout.fulfilled, (state) => {
         state.userInfo = null;
+        state.isUserError = false;
       });
   },
 });
