@@ -5,13 +5,13 @@ import companyServices from "./companyServices";
 
 export interface companyState {
   isCompanyError: boolean;
-  companyErrorMessage: string;
+  companyMessage: string;
   companies?: Company[];
 }
 
 const initialState: companyState = {
   isCompanyError: false,
-  companyErrorMessage: "",
+  companyMessage: "",
   companies: [],
 };
 
@@ -44,10 +44,13 @@ export const companySlice = createSlice({
       .addCase(fetchCompanies.fulfilled, (state, action) => {
         state.companies = action.payload?.data || [];
       })
+      .addCase(insertCompany.fulfilled, (state) => {
+        state.isCompanyError = false;
+        state.companyMessage = "Company successfully added";
+      })
       .addCase(insertCompany.rejected, (state, action) => {
         state.isCompanyError = true;
-        state.companyErrorMessage = <string>action.payload;
-        console.log(action.payload);
+        state.companyMessage = <string>action.payload;
       });
   },
 });

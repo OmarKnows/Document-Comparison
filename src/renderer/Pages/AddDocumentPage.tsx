@@ -4,7 +4,7 @@ import { fetchCompanies, insertCompany } from "features/company/companySlice";
 import { Company } from "features/company/companyModel";
 import { fileUpload, addNewFileToDb } from "features/files/fileSlice";
 import { useEffect, useState, useRef } from "react";
-import Message from "renderer/Components/Message";
+import Popup from "renderer/Components/Popup";
 import DatePicker from "react-date-picker";
 import dayjs from "dayjs";
 
@@ -14,34 +14,36 @@ const AddDocumentPage = () => {
   const [selectedFile, setSelectedFile] = useState<string | Blob>("");
   const [fileName, setFileName] = useState<string>("");
   const [company, setCompany] = useState<string>("");
+  const [filePopUp, setFilePopUp] = useState<boolean>(false);
+  const [companyPopUp, setCompanyPopUp] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
-  const { companies, isCompanyError, companyErrorMessage } = useAppSelector(
+  const { companies, isCompanyError, companyMessage } = useAppSelector(
     (state) => state.company
   );
-  const { fileErrorMessage, isFileError } = useAppSelector(
-    (state) => state.file
-  );
+  const { fileMessage, isFileError } = useAppSelector((state) => state.file);
 
   const submitCompanyForm = async (e: any) => {
+    e.preventDefault();
+
     await dispatch(insertCompany(newCompany));
+    setCompanyPopUp(true);
   };
 
   const submitNewFile = async (e: any) => {
-    try {
-      await dispatch(fileUpload(selectedFile));
-      await dispatch(
-        addNewFileToDb({
-          companyName: company,
-          fileName: fileName,
-          date: dayjs(date).format("YYYY-MM-DD"),
-        })
-      );
-      // console.log(`تم إضافة مكاتبة جديدة لـ ${company}`);
-    } catch (error) {
-      console.log(error);
-    }
+    e.preventDefault();
+
+    await dispatch(fileUpload(selectedFile));
+    await dispatch(
+      addNewFileToDb({
+        companyName: company,
+        fileName: fileName,
+        date: dayjs(date).format("YYYY-MM-DD"),
+      })
+    );
+
+    setFilePopUp(true);
   };
 
   const selectFile = (e: any) => {
@@ -95,16 +97,18 @@ const AddDocumentPage = () => {
           </Card>
         </Container>
       </Form>
-      {isCompanyError ? (
-        <Message variant="danger">{companyErrorMessage}</Message>
-      ) : (
-        <></>
-      )}
-      {isFileError ? (
-        <Message variant="danger">{fileErrorMessage}</Message>
-      ) : (
-        <></>
-      )}
+      <Popup
+        show={companyPopUp}
+        setShow={setCompanyPopUp}
+        body={companyMessage}
+        variant={isCompanyError ? "danger" : "success"}
+      />
+      <Popup
+        show={filePopUp}
+        setShow={setFilePopUp}
+        body={fileMessage}
+        variant={isFileError ? "danger" : "success"}
+      />
     </div>
   );
 };

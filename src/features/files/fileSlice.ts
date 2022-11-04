@@ -5,12 +5,12 @@ import fileServices from "./fileServices";
 
 export interface fileState {
   isFileError: boolean;
-  fileErrorMessage: string;
+  fileMessage: string;
 }
 
 const initialState: fileState = {
   isFileError: false,
-  fileErrorMessage: "",
+  fileMessage: "",
 };
 
 export const fileUpload = createAsyncThunk(
@@ -43,13 +43,21 @@ export const fileSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fileUpload.fulfilled, (state) => {
+        state.isFileError = false;
+        state.fileMessage = "File successfully added";
+      })
       .addCase(fileUpload.rejected, (state, action) => {
         (state.isFileError = true),
-          (state.fileErrorMessage = <string>action.payload);
+          (state.fileMessage = <string>action.payload);
+      })
+      .addCase(addNewFileToDb.fulfilled, (state) => {
+        state.isFileError = false;
+        state.fileMessage = "File successfully added";
       })
       .addCase(addNewFileToDb.rejected, (state, action) => {
         (state.isFileError = true),
-          (state.fileErrorMessage = <string>action.payload);
+          (state.fileMessage = <string>action.payload);
       });
   },
 });
