@@ -8,7 +8,7 @@ const fetchCompanies = async () => {
 
 const insertCompany = async (company: Company) => {
   return await axios.post("/api/v1/company", {
-    name: company.name,
+    companyName: company.companyName,
   });
 };
 

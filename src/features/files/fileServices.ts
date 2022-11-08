@@ -14,15 +14,39 @@ const uploadFile = async (selectedFile: string | Blob) => {
 
 const addNewFileToDb = async (file: File) => {
   return await axios.post("/api/v1/file", {
-    companyName: file.companyName,
     fileName: file.fileName,
-    date: file.date,
+    companyName: file.companyName,
+    fileDate: file.fileDate,
   });
+};
+
+const fetchFiles = async () => {
+  const response = await axios.get<File[]>("/api/v1/file");
+  return response;
+};
+
+const deleteFile = async (id: number) => {
+  const response = await axios.delete<File[]>(`/api/v1/file/${id}`);
+  return response;
+};
+
+const updateFile = async (file: File) => {
+  console.log(file);
+  const response = await axios.patch(`/api/v1/file/${file.id}`, {
+    fileName: file.fileName,
+    companyName: file.companyName,
+    fileDate: file.fileDate,
+  });
+  console.log(response);
+  return response;
 };
 
 const companyServices = {
   uploadFile,
   addNewFileToDb,
+  fetchFiles,
+  deleteFile,
+  updateFile,
 };
 
 export default companyServices;

@@ -101,12 +101,19 @@
     margin:auto;
     width: 50%;
   }
+
+  
   
   .formcard{
     margin:auto;
     width: 70%;
   }
   
+  .formcard2{
+    margin:auto;
+    width: 98%;
+  }
+
   .topPadding { 
     margin-top: 10px;
   }

@@ -1,5 +1,6 @@
 export interface File {
   companyName: string;
   fileName: string;
-  date: string;
+  fileDate: string;
+  id?: number | undefined;
 }

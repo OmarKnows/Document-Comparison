@@ -12,7 +12,7 @@ const login = async (user: User) => {
     name: user.name,
     password: user.password,
   });
-  localStorage.setItem("userInfo", JSON.stringify(user.name));
+  localStorage.setItem("userInfo", user.name);
   return response;
 };
 

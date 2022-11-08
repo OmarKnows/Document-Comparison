@@ -1,17 +1,25 @@
 import { Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useAppDispatch } from "hooks";
+import { useAppDispatch, useAppSelector } from "hooks";
 import {
   faArrowRightFromBracket,
   faFileCirclePlus,
   faFile,
 } from "@fortawesome/free-solid-svg-icons";
 import { logout } from "features/user/userSlice";
+import { useEffect } from "react";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const { userInfo } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    console.log(userInfo);
+  }, []);
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -50,9 +58,9 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarColor03">
             <ul className="navbar-nav me-auto">
               <Row>
-                <Col>
+                <Col style={{ whiteSpace: "nowrap" }}>
                   <h5 style={{ textAlign: "right", marginTop: "10px" }}>
-                    User
+                    {userInfo}
                   </h5>
                 </Col>
                 <Col
